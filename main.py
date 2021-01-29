@@ -2,14 +2,15 @@ import itertools as it
 import math
 
 def gen_chunk(word):
-    b_word = bytearray(word,'utf-8')
-    b_word_bitlen = len(b_word)*8
-    b_word.append(int('10000000',2))
-    while len(b_word)%(64-8) != 0:
-        b_word.append(0)
-    b_word_len_bytearray = (b_word_bitlen).to_bytes(8, byteorder='big')
-    b_word.extend(b_word_len_bytearray)
-    return b_word
+    bits = ''
+    for letter in word:
+        bits += '{0:08b}'.format(ord(letter))
+    bits_lenght = len(bits)
+    bits += '10000000'
+    while len(bits)%(512-64)!=0:
+        bits += '0'
+    bits += '{0:064b}'.format(bits_lenght)
+    return bits
 
 def get_prime_numbers(qty):
     prime_list = []
@@ -42,7 +43,18 @@ def get_round_constants():
         constants_list.append(hex(bin_fracional))
     return constants_list
 
+def gen_message_schedule(bin_str):
+    chunk_list = []
+    for k,v in enumerate(bin_str, start=1):
+        if k%32 == 0:
+            chunk_list.append(bin_str[k-32:k])
+    chunk_list.extend(['0'*32]*48)
+    return chunk_list
+     
 
 if __name__=='__main__':
-    print(get_hash_values())
-    print(get_round_constants())
+    word = 'hello world'
+    chunk = gen_chunk(word)
+    mschedule = gen_message_schedule(chunk)
+    for i in mschedule:
+        print(i)
