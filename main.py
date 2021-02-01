@@ -50,6 +50,12 @@ def gen_message_schedule(bin_str):
             chunk_list.append(bin_str[k-32:k])
     chunk_list.extend(['0'*32]*48)
     return chunk_list
+
+def rightrotate_str(string, qty):
+    return string[-qty:] + string[:len(string)-qty]
+
+def rightshift_str(string, qty):
+    return '0'*qty + string[:-qty]
      
 
 if __name__=='__main__':
