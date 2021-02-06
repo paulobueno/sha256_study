@@ -56,7 +56,26 @@ def rightrotate_str(string, qty):
 
 def rightshift_str(string, qty):
     return '0'*qty + string[:-qty]
-     
+
+def xor(list):
+	element = list[0]
+	for i in list[1:]:
+		_element = ''
+		for k,v in enumerate(i):
+			if v != element[k]:
+				_element += '1'
+			else:
+				_element += '0'
+		element = _element
+	return element
+	
+def modify_chunks(chunk_list):
+	for k,v in enumerate(chunk_list[16:], start=16):
+		s0_a = rightrotate_str(chunk_list[k-15],7)
+		s0_b = rightrotate_str(chunk_list[k-15],18)
+		s0_c = rightshift_str(chunk_list[k-15],3)
+		s0 = xor([s0_a,s0_b,s0_c])
+	return s0_b
 
 if __name__=='__main__':
     word = 'hello world'
