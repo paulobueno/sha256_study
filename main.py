@@ -90,10 +90,13 @@ def modify_chunks(chunk_list):
         chunk_list[k] = sum_bin_str([chunk_list[k-16],s0,chunk_list[k-7],s1],32)
     return chunk_list
 
-if __name__=='__main__':
-    word = 'hello world'
+def step_5(word):
     chunk = gen_chunk(word)
     chunks = gen_message_schedule(chunk)
     chunks = modify_chunks(chunks)
-    for i in chunks:
+    return chunks
+
+if __name__=='__main__':
+    word = 'hello world'
+    for i in step_5(word):
         print(i)
